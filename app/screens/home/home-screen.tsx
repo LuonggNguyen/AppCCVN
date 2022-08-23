@@ -65,6 +65,7 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList>> = observer(fun
   const { topMovies } = topMovieStore
   const { newMovies } = newMovieStore
   const { genres } = genreStore
+
   const leftFunc = () => {
     firebase
       .auth()
@@ -99,8 +100,10 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList>> = observer(fun
     }, 3000)
     return () => clearInterval(id)
   }, [ran])
-  const listGenre = topMovies[ran].genre_ids.map((item) => {
-    var genre = genres.find((it) => it.id === item)
+  if (!topMovies?.length || !genres?.length || !newMovies?.length) return null
+
+  const listGenre = topMovies?.[ran]?.genre_ids?.map((item) => {
+    var genre = genres?.find((it) => it.id === item)
     return genre.name
   })
   return (

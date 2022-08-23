@@ -120,26 +120,19 @@ interface NavigationProps extends Partial<React.ComponentProps<typeof Navigation
 
 export const AppNavigator = (props: NavigationProps) => {
   const { discoverMovieStore, genreStore, newMovieStore, topMovieStore } = useStores()
-  const { discoverMovies } = discoverMovieStore
-  const { topMovies } = topMovieStore
-  const { newMovies } = newMovieStore
-  const { genres } = genreStore
   const colorScheme = useColorScheme()
   useBackButtonHandler(canExit)
   const loadApp = async () => {
-    // if (!discoverMovies || !topMovies || !newMovies || !genres) {
     await Promise.all([
       discoverMovieStore.getDiscoverMovies(),
       topMovieStore.getTopMovies(),
       newMovieStore.getNewMovies(),
       genreStore.getGenres(),
     ])
-    // } else {
     console.log("Done loading")
-    // }
   }
   useEffect(() => {
-    loadApp().finally(SplashScreen.hide)
+    loadApp?.()?.finally?.(SplashScreen.hide)
     return () => {}
   }, [])
 

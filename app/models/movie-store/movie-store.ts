@@ -1,7 +1,8 @@
-import { Instance, SnapshotOut, types, SnapshotIn, flow } from 'mobx-state-tree';
-import { MovieModel, Movie, MovieSnapshotOut } from '../movie/movie';
-import { withEnvironment } from '../extensions/with-environment';
-import { GetMoviesResult} from '../../services/api/api.types';
+import { Instance, SnapshotOut, types, SnapshotIn } from "mobx-state-tree"
+import { MovieModel, Movie, MovieSnapshotOut, MovieResponse } from "../movie/movie"
+import { withEnvironment } from "../extensions/with-environment"
+import { Api } from "../../services/api"
+import { KEY_API_CONFIG } from "../../services/api/api-config"
 
 /**
  * Model description here for TypeScript hints.
@@ -16,71 +17,58 @@ export const MovieStoreModel = types
   })
   .extend(withEnvironment)
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
-  .actions(self => ({
+  .actions((self) => ({
     saveDiscoverMovies: (movieSnapshots: MovieSnapshotOut[]) => {
-      const movieModels: Movie[] = movieSnapshots.map(c => MovieModel.create(c)) // create model instances from the plain objects
+      const movieModels: Movie[] = movieSnapshots.map((c) => MovieModel.create(c)) // create model instances from the plain objects
       self.discoverMovies.replace(movieModels) // Replace the existing data with the new data
     },
   }))
-  .actions(self => ({
-    getDiscoverMovies: flow(function*() {
-      const result: GetMoviesResult = yield self.environment.api.getDiscoverMovies()
-
-      if (result.kind === "ok") {
-        self.saveDiscoverMovies(result.movies)
-      } else {
-        __DEV__ && console.tron.log(result.kind)
-      }
-    }),
+  .actions((self) => ({
+    getDiscoverMovies: async () => {
+      const response = await Api.query<MovieResponse>(`/discover/movie${KEY_API_CONFIG}`)
+      const results = response.data.results.map((movie) => movie)
+      self.saveDiscoverMovies(results)
+    },
   }))
-  .actions(self => ({
+  .actions((self) => ({
     saveNewMovies: (movieSnapshots: MovieSnapshotOut[]) => {
-      const movieModels: Movie[] = movieSnapshots.map(c => MovieModel.create(c)) // create model instances from the plain objects
+      const movieModels: Movie[] = movieSnapshots.map((c) => MovieModel.create(c)) // create model instances from the plain objects
       self.newMovies.replace(movieModels) // Replace the existing data with the new data
     },
   }))
-  .actions(self => ({
-    getNewMovies: flow(function*() {
-      const result: GetMoviesResult = yield self.environment.api.getNewMovies()
-      if (result.kind === "ok") {
-        self.saveNewMovies(result.movies)
-      } else {
-        __DEV__ && console.tron.log(result.kind)
-      }
-    })
+  .actions((self) => ({
+    getNewMovies: async () => {
+      const response = await Api.query<MovieResponse>(`/movie/upcoming${KEY_API_CONFIG}`)
+      const results = response.data.results.map((movie) => movie)
+      self.saveNewMovies(results)
+    },
   }))
-  .actions(self => ({
+  .actions((self) => ({
     saveTopMovies: (movieSnapshots: MovieSnapshotOut[]) => {
-      const movieModels: Movie[] = movieSnapshots.map(c => MovieModel.create(c)) 
+      const movieModels: Movie[] = movieSnapshots.map((c) => MovieModel.create(c))
       self.topMovies.replace(movieModels)
     },
   }))
-  .actions(self => ({
-    getTopMovies: flow(function*() {
-      const result: GetMoviesResult = yield self.environment.api.getTopMovies()
-      if (result.kind === "ok") {
-        self.saveTopMovies(result.movies)
-      } else {
-        __DEV__ && console.tron.log(result.kind)
-      }
-    })
+  .actions((self) => ({
+    getTopMovies: async () => {
+      const response = await Api.query<MovieResponse>(`/trending/movie/week${KEY_API_CONFIG}`)
+      const results = response.data.results.map((movie) => movie)
+      self.saveTopMovies(results)
+    },
   }))
 
-  .actions(self => ({
+  .actions((self) => ({
     saveTopSearchMovies: (movieSnapshots: MovieSnapshotOut[]) => {
-      const movieModels: Movie[] = movieSnapshots.map(c => MovieModel.create(c)) 
+      const movieModels: Movie[] = movieSnapshots.map((c) => MovieModel.create(c))
       self.topSearchMovies.replace(movieModels)
     },
   }))
-  .actions(self => ({
-    getTopSearchMovies: flow(function*() {
-      const result: GetMoviesResult = yield self.environment.api.getTopSearchMovies()
-      if (result.kind === "ok") {
-        self.saveTopSearchMovies(result.movies)
-      } else {
-        __DEV__ && console.tron.log(result.kind)
-      }
-    })
+  .actions((self) => ({
+    getTopSearchMovies: async () => {
+      const response = await Api.query<MovieResponse>(`/movie/popular${KEY_API_CONFIG}`)
+      const results = response.data.results.map((movie) => movie)
+      self.saveTopMovies(results)
+    },
   }))
 
 export interface MovieStore extends Instance<typeof MovieStoreModel> {}

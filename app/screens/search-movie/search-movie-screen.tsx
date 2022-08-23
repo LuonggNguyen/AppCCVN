@@ -25,7 +25,6 @@ export const SearchMovieScreen: FC<StackScreenProps<NavigatorParamList, "searchM
         axios
           .get(`https://api.themoviedb.org/3/search/movie${KEY_API_CONFIG}&query=${search}`)
           .then((response) => {
-            console.log("load data")
             setMovie(response.data.results)
           })
       }
@@ -43,7 +42,7 @@ export const SearchMovieScreen: FC<StackScreenProps<NavigatorParamList, "searchM
               style={styles.textInput}
               placeholder="Search"
               value={search}
-              onChangeText={(e) => setSearch(e)}
+              onChangeText={(e) => setSearch(e.trimStart())}
             />
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Ionicons name="close" size={28} color="#777" />

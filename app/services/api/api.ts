@@ -1,17 +1,13 @@
 import { ApisauceInstance, create, ApiResponse } from "apisauce"
 import { getGeneralApiProblem } from "./api-problem"
-import { ApiConfig, DEFAULT_API_CONFIG, KEY_API_CONFIG } from './api-config';
-import * as Types from "./api.types"
-import { GenreSnapshotOut } from "../../models";
-import { MovieSnapshotOut } from '../../models/movie/movie';
-
+import { ApiConfig, DEFAULT_API_CONFIG } from "./api-config"
 
 /**
  * Manages all requests to the API.
  */
 export class Api {
-
   apisauce: ApisauceInstance
+  static apisauceInstance: ApisauceInstance
   config: ApiConfig
 
   /**
@@ -39,142 +35,147 @@ export class Api {
         Accept: "application/json",
       },
     })
+    Api.apisauceInstance = this.apisauce
   }
-  async getGenres(): Promise<Types.GetGenresResult> {
-    const response: ApiResponse<any> = await this.apisauce.get(`/genre/movie/list${KEY_API_CONFIG}`)
-    
+
+  static async query<T extends any>(api_path: string): Promise<{ kind: string; data: T }> {
+    const response: ApiResponse<any> = await Api.apisauceInstance.get(api_path)
     if (!response.ok) {
       const problem = getGeneralApiProblem(response)
-      if (problem) return problem
+      if (problem) return problem as any
     }
-    const convertGenre = (raw): GenreSnapshotOut => {
-      return {
-        id: raw.id,
-        name: raw.name,
-      }
-    }
-    try {
-      const rawGenres = response.data.genres
-      const resultGenres: GenreSnapshotOut[] = rawGenres.map(convertGenre)
-      return { kind: "ok", genres: resultGenres }
-    } catch {
-      return { kind: "bad-data" }
-    }
-  }
-  async getDiscoverMovies(): Promise<Types.GetMoviesResult> {
-    const response: ApiResponse<any> = await this.apisauce.get(`/discover/movie${KEY_API_CONFIG}`)
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response)
-      if (problem) return problem
-    }
-    const convertMovie = (raw): MovieSnapshotOut => {
-      return {
-        id: raw.id,
-        title: raw.title,
-        poster_path: raw.poster_path,
-        overview: raw.overview,
-        genre_ids: raw.genre_ids,
-        vote_average: raw.vote_average,
-        vote_count: raw.vote_count,
-      }
-    }
-    try {
-      const rawMovies = response.data.results
-      const resultMovies: MovieSnapshotOut[] = rawMovies.map(convertMovie)
-      return { kind: "ok", movies: resultMovies }
-
-    } catch {
-      
-      return { kind: "bad-data" }
-    }
+    return { kind: "ok", data: response?.data }
   }
 
-  async getNewMovies(): Promise<Types.GetMoviesResult> {
-    const response: ApiResponse<any> = await this.apisauce.get(`/movie/upcoming${KEY_API_CONFIG}`)
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response)
-      if (problem) return problem
-    }
-    const convertMovie = (raw): MovieSnapshotOut => {
-      return {
-        id: raw.id,
-        title: raw.title,
-        poster_path: raw.poster_path,
-        overview: raw.overview,
-        genre_ids: raw.genre_ids,
-        vote_average: raw.vote_average,
-        vote_count: raw.vote_count,
-      }
-    }
-    try {
-      const rawMovies = response.data.results
-      const resultMovies: MovieSnapshotOut[] = rawMovies.map(convertMovie)
-      return { kind: "ok", movies: resultMovies }
+  // async getGenres(): Promise<Types.GetGenresResult> {
+  //   const response: ApiResponse<any> = await this.apisauce.get(`/genre/movie/list${KEY_API_CONFIG}`)
 
-    } catch {
-      
-      return { kind: "bad-data" }
-    }
-  }
+  //   if (!response.ok) {
+  //     const problem = getGeneralApiProblem(response)
+  //     if (problem) return problem
+  //   }
+  //   const convertGenre = (raw): GenreSnapshotOut => {
+  //     return {
+  //       id: raw.id,
+  //       name: raw.name,
+  //     }
+  //   }
+  //   try {
+  //     const rawGenres = response.data.genres
+  //     const resultGenres: GenreSnapshotOut[] = rawGenres.map(convertGenre)
+  //     return { kind: "ok", genres: resultGenres }
+  //   } catch {
+  //     return { kind: "bad-data" }
+  //   }
+  // }
+  // async getDiscoverMovies(): Promise<Types.GetMoviesResult> {
+  //   const response: ApiResponse<any> = await this.apisauce.get(`/discover/movie${KEY_API_CONFIG}`)
+  //   if (!response.ok) {
+  //     const problem = getGeneralApiProblem(response)
+  //     if (problem) return problem
+  //   }
+  //   const convertMovie = (raw): MovieSnapshotOut => {
+  //     return {
+  //       id: raw.id,
+  //       title: raw.title,
+  //       poster_path: raw.poster_path,
+  //       overview: raw.overview,
+  //       genre_ids: raw.genre_ids,
+  //       vote_average: raw.vote_average,
+  //       vote_count: raw.vote_count,
+  //     }
+  //   }
+  //   try {
+  //     const rawMovies = response.data.results
+  //     const resultMovies: MovieSnapshotOut[] = rawMovies.map(convertMovie)
+  //     return { kind: "ok", movies: resultMovies }
+  //   } catch {
+  //     return { kind: "bad-data" }
+  //   }
+  // }
 
-  async getTopMovies(): Promise<Types.GetMoviesResult> {
-    const response: ApiResponse<any> = await this.apisauce.get(`/trending/movie/week${KEY_API_CONFIG}`)
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response)
-      if (problem) return problem
-    }
-    const convertMovie = (raw): MovieSnapshotOut => {
-      return {
-        id: raw.id,
-        title: raw.title,
-        poster_path: raw.poster_path,
-        overview: raw.overview,
-        genre_ids: raw.genre_ids,
-        vote_average: raw.vote_average,
-        vote_count: raw.vote_count,
-      }
-    }
-    try {
-      const rawMovies = response.data.results
-      const resultMovies: MovieSnapshotOut[] = rawMovies.map(convertMovie)
-      return { kind: "ok", movies: resultMovies }
+  // async getNewMovies(): Promise<Types.GetMoviesResult> {
+  //   const response: ApiResponse<any> = await this.apisauce.get(`/movie/upcoming${KEY_API_CONFIG}`)
+  //   if (!response.ok) {
+  //     const problem = getGeneralApiProblem(response)
+  //     if (problem) return problem
+  //   }
+  //   const convertMovie = (raw): MovieSnapshotOut => {
+  //     return {
+  //       id: raw.id,
+  //       title: raw.title,
+  //       poster_path: raw.poster_path,
+  //       overview: raw.overview,
+  //       genre_ids: raw.genre_ids,
+  //       vote_average: raw.vote_average,
+  //       vote_count: raw.vote_count,
+  //     }
+  //   }
+  //   try {
+  //     const rawMovies = response.data.results
+  //     const resultMovies: MovieSnapshotOut[] = rawMovies.map(convertMovie)
+  //     return { kind: "ok", movies: resultMovies }
+  //   } catch {
+  //     return { kind: "bad-data" }
+  //   }
+  // }
 
-    } catch {
-      
-      return { kind: "bad-data" }
-    }
-  }
-
-
-  async getTopSearchMovies(): Promise<Types.GetMoviesResult> {
-    const response: ApiResponse<any> = await this.apisauce.get(`/movie/popular${KEY_API_CONFIG}`)    
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response)
-      if (problem) return problem
-    }
-    const convertMovie = (raw): MovieSnapshotOut => {
-      return {
-        id: raw.id,
-        title: raw.title,
-        poster_path: raw.poster_path,
-        overview: raw.overview,
-        genre_ids: raw.genre_ids,
-        vote_average: raw.vote_average,
-        vote_count: raw.vote_count,
-      }
-    }
-    try {
-      const rawMovies = response.data.results
-      const resultMovies: MovieSnapshotOut[] = rawMovies.map(convertMovie)
-      return { kind: "ok", movies: resultMovies }
-
-    } catch {
-      return { kind: "bad-data" }
-    }
-  }
+  // async getTopMovies(): Promise<Types.GetMoviesResult> {
+  //   const response: ApiResponse<any> = await this.apisauce.get(
+  //     `/trending/movie/week${KEY_API_CONFIG}`,
+  //   )
+  //   if (!response.ok) {
+  //     const problem = getGeneralApiProblem(response)
+  //     if (problem) return problem
+  //   }
+  //   const convertMovie = (raw): MovieSnapshotOut => {
+  //     return {
+  //       id: raw.id,
+  //       title: raw.title,
+  //       poster_path: raw.poster_path,
+  //       overview: raw.overview,
+  //       genre_ids: raw.genre_ids,
+  //       vote_average: raw.vote_average,
+  //       vote_count: raw.vote_count,
+  //     }
+  //   }
+  //   try {
+  //     const rawMovies = response.data.results
+  //     const resultMovies: MovieSnapshotOut[] = rawMovies.map(convertMovie)
+  //     return { kind: "ok", movies: resultMovies }
+  //   } catch {
+  //     return { kind: "bad-data" }
+  //   }
+  // }
 
   // async getTopSearchMovies(): Promise<Types.GetMoviesResult> {
-  //   const response: ApiResponse<any> = await this.apisauce.get(`/movie/popular${KEY_API_CONFIG}`)    
+  //   const response: ApiResponse<any> = await this.apisauce.get(`/movie/popular${KEY_API_CONFIG}`)
+  //   if (!response.ok) {
+  //     const problem = getGeneralApiProblem(response)
+  //     if (problem) return problem
+  //   }
+  //   const convertMovie = (raw): MovieSnapshotOut => {
+  //     return {
+  //       id: raw.id,
+  //       title: raw.title,
+  //       poster_path: raw.poster_path,
+  //       overview: raw.overview,
+  //       genre_ids: raw.genre_ids,
+  //       vote_average: raw.vote_average,
+  //       vote_count: raw.vote_count,
+  //     }
+  //   }
+  //   try {
+  //     const rawMovies = response.data.results
+  //     const resultMovies: MovieSnapshotOut[] = rawMovies.map(convertMovie)
+  //     return { kind: "ok", movies: resultMovies }
+  //   } catch {
+  //     return { kind: "bad-data" }
+  //   }
+  // }
+
+  // async getTopSearchMovies(): Promise<Types.GetMoviesResult> {
+  //   const response: ApiResponse<any> = await this.apisauce.get(`/movie/popular${KEY_API_CONFIG}`)
   //   if (!response.ok) {
   //     const problem = getGeneralApiProblem(response)
   //     if (problem) return problem

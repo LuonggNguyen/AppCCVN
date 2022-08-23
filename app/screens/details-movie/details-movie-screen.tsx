@@ -19,9 +19,8 @@ import { ItemCast } from "../../components/item-cast/item-cast"
 import ItemMovie from "../../components/item-movie/item-movie"
 import axios from "axios"
 import { KEY_API_CONFIG } from "../../services/api/api-config"
-
-import { ItemTrailer } from "../../components/item-trailer/item-trailer"
 import { AboutMovie } from "../../components/about-movie/about-movie"
+import { MovieList } from "./components/movie-list"
 const ListTab = [
   {
     status: "Trailers",
@@ -160,26 +159,7 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
           <View style={{ flex: 1 }}>
             {dataList.map((item) => {
               if (item.tab == "1") {
-                return (
-                  <FlatList
-                    key={1}
-                    showsVerticalScrollIndicator={false}
-                    data={trailer}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => {
-                      return (
-                        <ItemTrailer
-                          img={`https://img.youtube.com/vi/${item.key}/hqdefault.jpg`}
-                          name={item.name}
-                          quality={item.size}
-                          onPress={() => {
-                            watchMovie(`https://www.youtube.com/watch?v=${item.key}`)
-                          }}
-                        />
-                      )
-                    }}
-                  />
-                )
+                return <MovieList data={trailer} key={1} />
               } else if (item.tab == "2") {
                 return (
                   <View style={{ alignItems: "center" }} key={2}>

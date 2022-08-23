@@ -64,7 +64,7 @@ export const ProfileScreen: FC<StackScreenProps<NavigatorParamList, "profile">> 
         </View>
         <View style={styles.bot}>
           <Text style={styles.welcome}>
-            {!user.displayName ? "Luong Nguyen CCVN" : user.displayName}
+            {!user?.displayName ? "Luong Nguyen CCVN" : user.displayName}
           </Text>
 
           <TouchableOpacity style={styles.btn} onPress={logout}>
