@@ -16,20 +16,22 @@ export interface ItemTrailerProps {
 /**
  * Describe your component here
  */
-export const ItemTrailer = observer(function ItemTrailer(props: ItemTrailerProps) {
-  return (
-    <TouchableOpacity onPress={props.onPress} style={styles.item}>
-      <Image style={styles.img} source={{ uri: props.img }} />
-      <View style={styles.info}>
-        <Text style={styles.name}>{props.name}</Text>
-        <View style={styles.viewSize}>
-          <Text style={styles.imdb}>Quality: </Text>
-          <Text style={styles.size}> {props.quality}</Text>
+export const ItemTrailer = React.memo(
+  observer(function ItemTrailer(props: ItemTrailerProps) {
+    return (
+      <TouchableOpacity onPress={props.onPress} style={styles.item}>
+        <Image style={styles.img} source={{ uri: props.img }} />
+        <View style={styles.info}>
+          <Text style={styles.name}>{props.name}</Text>
+          <View style={styles.viewSize}>
+            <Text style={styles.imdb}>Quality: </Text>
+            <Text style={styles.size}> {props.quality}</Text>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  )
-})
+      </TouchableOpacity>
+    )
+  }),
+)
 
 const styles = StyleSheet.create({
   item: {

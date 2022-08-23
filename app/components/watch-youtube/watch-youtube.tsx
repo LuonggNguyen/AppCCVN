@@ -13,9 +13,11 @@ export interface WatchYoutubeProps {
 /**
  * Describe your component here
  */
-export const WatchYoutube = observer(function WatchYoutube(props: WatchYoutubeProps) {
-  return <YouTube style={styles.youtube} apiKey="QYpDQxHfTPk" videoId="QYpDQxHfTPk" />
-})
+export const WatchYoutube = React.memo(
+  observer(function WatchYoutube(props: WatchYoutubeProps) {
+    return <YouTube style={styles.youtube} apiKey="QYpDQxHfTPk" videoId="QYpDQxHfTPk" />
+  }),
+)
 const styles = StyleSheet.create({
   youtube: {
     position: "absolute",

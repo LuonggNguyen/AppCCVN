@@ -1,14 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import {
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native"
+import { FlatList, SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
 import { BannerMovie } from "../../components/banner-movie/banner-movie"
@@ -16,11 +8,11 @@ import { ButtonPlay } from "../../components/button-play/button-play"
 import { ButtonDownload } from "../../components/button-download/button-download"
 import { Header } from "../../components/header/header"
 import { ItemCast } from "../../components/item-cast/item-cast"
-import ItemMovie from "../../components/item-movie/item-movie"
 import axios from "axios"
 import { KEY_API_CONFIG } from "../../services/api/api-config"
 import { AboutMovie } from "../../components/about-movie/about-movie"
 import { MovieList } from "./components/movie-list"
+import { MovieList2 } from "./components/movie-list-2"
 const ListTab = [
   {
     status: "Trailers",
@@ -89,11 +81,6 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
       }
       setStatus(status)
     }
-
-    const goToDetailById = (id) => {
-      navigation.navigate("detailsMovie", { id: id })
-    }
-
     const listGenre = genres.map((item) => {
       return item.name
     })
@@ -163,26 +150,7 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
               } else if (item.tab == "2") {
                 return (
                   <View style={{ alignItems: "center" }} key={2}>
-                    <FlatList
-                      showsVerticalScrollIndicator={false}
-                      numColumns={2}
-                      renderItem={({ item }) => {
-                        return (
-                          <View style={styles.item}>
-                            <ItemMovie
-                              img={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
-                              soccer={item.vote_average}
-                              widthItem={0.45}
-                              onPress={() => {
-                                goToDetailById(item.id)
-                              }}
-                            />
-                          </View>
-                        )
-                      }}
-                      keyExtractor={(item) => item.id.toString()}
-                      data={rcmMovie}
-                    />
+                    <MovieList2 data={rcmMovie} />
                   </View>
                 )
               } else {
@@ -240,9 +208,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     color: "red",
     fontWeight: "bold",
-  },
-  item: {
-    height: Dimensions.get("screen").height * 0.3,
-    marginVertical: 4,
   },
 })

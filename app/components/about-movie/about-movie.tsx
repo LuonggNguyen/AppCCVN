@@ -18,24 +18,26 @@ export interface AboutMovieProps {
 /**
  * Describe your component here
  */
-export const AboutMovie = observer(function AboutMovie(props: AboutMovieProps) {
-  return (
-    <SafeAreaView style={{ alignItems: "center", marginHorizontal: 8 }} key={3}>
-      <ScrollView>
-        <Text style={styles.overview}>Overview: {props.overview}</Text>
-        <Text style={styles.rate}>
-          Rate: {props.vote_average} <Ionicons name="star" color={"gold"} size={20} />
-        </Text>
-        <Text style={styles.rateCount}>
-          Rate count: {props.vote_count} <Ionicons name="people" color={"blue"} size={20} />
-        </Text>
-        <Text style={styles.time}>
-          Run time: {props.runtime} <Ionicons name="time" color={"violet"} size={20} />
-        </Text>
-      </ScrollView>
-    </SafeAreaView>
-  )
-})
+export const AboutMovie = React.memo(
+  observer(function AboutMovie(props: AboutMovieProps) {
+    return (
+      <SafeAreaView style={{ alignItems: "center", marginHorizontal: 8 }} key={3}>
+        <ScrollView>
+          <Text style={styles.overview}>Overview: {props.overview}</Text>
+          <Text style={styles.rate}>
+            Rate: {props.vote_average} <Ionicons name="star" color={"gold"} size={20} />
+          </Text>
+          <Text style={styles.rateCount}>
+            Rate count: {props.vote_count} <Ionicons name="people" color={"blue"} size={20} />
+          </Text>
+          <Text style={styles.time}>
+            Run time: {props.runtime} <Ionicons name="time" color={"violet"} size={20} />
+          </Text>
+        </ScrollView>
+      </SafeAreaView>
+    )
+  }),
+)
 
 const styles = StyleSheet.create({
   overview: {

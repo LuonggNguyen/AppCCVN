@@ -18,23 +18,25 @@ export interface ItemMovie2Props {
 /**
  * Describe your component here
  */
-export const ItemMovie2 = observer(function ItemMovie2(props: ItemMovie2Props) {
-  return (
-    <TouchableOpacity onPress={props.onPress} style={styles.item}>
-      <Image style={styles.img} source={{ uri: props.img }} />
-      <View style={styles.info}>
-        <Text style={styles.name}>{props.name}</Text>
-        <Text style={styles.time}>
-          Vote: {props.vote_count} <Ionicons name="people" color={"brown"} size={16} />
-        </Text>
-        <View style={styles.viewSize}>
-          <Text style={styles.imdb}>IMDb: </Text>
-          <Text style={styles.size}> {props.vote_average}</Text>
+export const ItemMovie2 = React.memo(
+  observer(function ItemMovie2(props: ItemMovie2Props) {
+    return (
+      <TouchableOpacity onPress={props.onPress} style={styles.item}>
+        <Image style={styles.img} source={{ uri: props.img }} />
+        <View style={styles.info}>
+          <Text style={styles.name}>{props.name}</Text>
+          <Text style={styles.time}>
+            Vote: {props.vote_count} <Ionicons name="people" color={"brown"} size={16} />
+          </Text>
+          <View style={styles.viewSize}>
+            <Text style={styles.imdb}>IMDb: </Text>
+            <Text style={styles.size}> {props.vote_average}</Text>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  )
-})
+      </TouchableOpacity>
+    )
+  }),
+)
 
 const styles = StyleSheet.create({
   item: {
