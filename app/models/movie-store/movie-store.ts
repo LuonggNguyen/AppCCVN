@@ -67,7 +67,7 @@ export const MovieStoreModel = types
     getTopSearchMovies: async () => {
       const response = await Api.query<MovieResponse>(`/movie/popular${KEY_API_CONFIG}`)
       const results = response.data.results.map((movie) => movie)
-      self.saveTopMovies(results)
+      self.saveTopSearchMovies(results)
     },
   }))
 
