@@ -60,6 +60,10 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
         .then((userCredentials) => {
           const user = userCredentials.user
           navigation.navigate("index")
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "index" }],
+          })
           console.log("Login Successful !! \n Hello " + user.email)
         })
         .catch((err) => {
@@ -78,6 +82,10 @@ export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = ob
             console.log("Login Successful !! \n Hello " + user.email)
             setEmail("")
             setPassword("")
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "index" }],
+            })
           })
           .catch((err) => {
             console.log("Login Fail !!\n" + err)
