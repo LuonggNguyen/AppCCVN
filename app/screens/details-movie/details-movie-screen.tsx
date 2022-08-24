@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite"
 import { FlatList, SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
-import { BannerMovie } from "../../components/banner-movie/banner-movie"
 import { ButtonPlay } from "../../components/button-play/button-play"
 import { ButtonDownload } from "../../components/button-download/button-download"
 import { Header } from "../../components/header/header"
@@ -13,6 +12,7 @@ import { KEY_API_CONFIG } from "../../services/api/api-config"
 import { AboutMovie } from "../../components/about-movie/about-movie"
 import { MovieList } from "./components/movie-list"
 import { MovieList2 } from "./components/movie-list-2"
+import { WatchYoutube } from "../../components/watch-youtube/watch-youtube"
 const ListTab = [
   {
     status: "Trailers",
@@ -41,8 +41,6 @@ const dataTab = [
 
 export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detailsMovie">> =
   observer(function DetailsMovieScreen({ route, navigation }) {
-    const [status, setStatus] = useState("Trailers")
-    const [dataList, setDataList] = useState(dataTab.filter((e) => e.status == status))
     const { id } = route.params
     let mv: any = {}
     const [movie, setMovie] = useState<Movie>(mv)
@@ -50,7 +48,9 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
     const [cast, setCast] = useState()
     const [trailer, setTrailer] = useState([])
     const [genres, setGenres] = useState([])
-
+    const [key, setKey] = useState()
+    const [status, setStatus] = useState("Trailers")
+    const [dataList, setDataList] = useState(dataTab.filter((e) => e.status == status))
     useEffect(() => {
       axios.get(`https://api.themoviedb.org/3/movie/${id}${KEY_API_CONFIG}`).then((response) => {
         setGenres(response.data.genres)
@@ -87,8 +87,14 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
     const uriVideo = trailer.map((item) => {
       return item.key
     })
-    const watchMovie = (url) => {
-      navigation.navigate("watchVideo", { uri: url })
+    const getTrailer = () => {
+      var keyVideo = ""
+      trailer.forEach((item) => {
+        if (item.type == "Trailer") {
+          keyVideo = item.key
+        }
+      })
+      return keyVideo
     }
     return (
       <View style={styles.container}>
@@ -99,7 +105,7 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
             iconRight="ios-share-outline"
             leftFunc={() => navigation.goBack()}
           />
-          <BannerMovie urlImage={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
+          <WatchYoutube keyVideo={!key ? getTrailer() : key} />
         </View>
         <View style={styles.bot}>
           <View style={styles.info}>
@@ -109,7 +115,7 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
               <ButtonPlay
                 onPress={() => {
                   var rand = uriVideo[Math.floor(Math.random() * uriVideo.length)]
-                  watchMovie(`https://www.youtube.com/watch?v=${rand}`)
+                  setKey(rand)
                 }}
               />
               <ButtonDownload />
@@ -146,7 +152,7 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
           <View style={{ flex: 1 }}>
             {dataList.map((item) => {
               if (item.tab == "1") {
-                return <MovieList data={trailer} key={1} />
+                return <MovieList key={1} data={trailer} setKey={setKey} />
               } else if (item.tab == "2") {
                 return (
                   <View style={{ alignItems: "center" }} key={2}>
@@ -178,7 +184,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bot: {
-    flex: 2,
+    flex: 2.4,
   },
   info: {
     marginHorizontal: 12,

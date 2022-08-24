@@ -55,7 +55,7 @@ export const SearchMovieScreen: FC<StackScreenProps<NavigatorParamList, "searchM
           <View style={{ flex: 1 }}>
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={!search ? topSearchMovies : movie}
+              data={!search ? [...topSearchMovies] : movie}
               renderItem={({ item }) => {
                 return (
                   <ItemMovie2

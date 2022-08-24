@@ -1,13 +1,13 @@
 import * as React from "react"
-import { StyleProp, ViewStyle, StyleSheet } from "react-native"
+import { StyleProp, ViewStyle, StyleSheet, SafeAreaView } from "react-native"
 import { observer } from "mobx-react-lite"
-import YouTube from "react-native-youtube"
-
+import YoutubePlayer from "react-native-youtube-iframe"
 export interface WatchYoutubeProps {
   /**
    * An optional style override useful for padding & margin.
    */
   style?: StyleProp<ViewStyle>
+  keyVideo: string
 }
 
 /**
@@ -15,7 +15,23 @@ export interface WatchYoutubeProps {
  */
 export const WatchYoutube = React.memo(
   observer(function WatchYoutube(props: WatchYoutubeProps) {
-    return <YouTube style={styles.youtube} apiKey="QYpDQxHfTPk" videoId="QYpDQxHfTPk" />
+    const [playing, setPlaying] = React.useState(false)
+    const onStateChange = React.useCallback((state) => {
+      if (state === "ended") {
+        setPlaying(false)
+        console.log("video has finished playing!")
+      }
+    }, [])
+    return (
+      <SafeAreaView style={styles.youtube}>
+        <YoutubePlayer
+          height={300}
+          play={playing}
+          videoId={props.keyVideo}
+          onChangeState={onStateChange}
+        />
+      </SafeAreaView>
+    )
   }),
 )
 const styles = StyleSheet.create({
