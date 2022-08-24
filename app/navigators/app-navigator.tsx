@@ -130,9 +130,10 @@ export const AppNavigator = (props: NavigationProps) => {
       genreStore.getGenres(),
     ])
     console.log("Done loading")
+    SplashScreen.hide()
   }
   useEffect(() => {
-    loadApp?.()?.finally?.(SplashScreen.hide)
+    loadApp?.()
     return () => {}
   }, [])
 
