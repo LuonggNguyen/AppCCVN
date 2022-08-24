@@ -11,6 +11,7 @@ import { AboutMovie } from "../../components/about-movie/about-movie"
 import { MovieList } from "./components/movie-list"
 import { MovieList2 } from "./components/movie-list-2"
 import { WatchYoutube } from "../../components/watch-youtube/watch-youtube"
+import { Comment } from "../../components/comment/comment"
 const ListTab = [
   {
     status: "Trailers",
@@ -20,6 +21,9 @@ const ListTab = [
   },
   {
     status: "About",
+  },
+  {
+    status: "Comment",
   },
 ]
 const dataTab = [
@@ -35,6 +39,10 @@ const dataTab = [
     tab: "3",
     status: "About",
   },
+  {
+    tab: "4",
+    status: "Comment",
+  },
 ]
 
 export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detailsMovie">> =
@@ -45,30 +53,38 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
     const [rcmMovie, setRcmMovie] = useState()
     const [cast, setCast] = useState()
     const [trailer, setTrailer] = useState([])
+    const [comment, setComment] = useState([])
     const [genres, setGenres] = useState([])
     const [key, setKey] = useState()
     const [status, setStatus] = useState("Trailers")
     const [dataList, setDataList] = useState(dataTab.filter((e) => e.status == status))
     useEffect(() => {
-      axios.get(`https://api.themoviedb.org/3/movie/${id}${KEY_API_CONFIG}`).then((response) => {
-        setGenres(response.data.genres)
-        setMovie(response.data)
-      })
-      axios
-        .get(`https://api.themoviedb.org/3/movie/${id}/credits${KEY_API_CONFIG}`)
-        .then((response) => {
-          setCast(response.data.cast)
-        })
-      axios
-        .get(`https://api.themoviedb.org/3/movie/${id}/videos${KEY_API_CONFIG}`)
-        .then((response) => {
-          setTrailer(response.data.results)
-        })
-      axios
-        .get(`https://api.themoviedb.org/3/movie/${id}/recommendations${KEY_API_CONFIG}`)
-        .then((response) => {
-          setRcmMovie(response.data.results)
-        })
+      Promise.all([
+        axios.get(`https://api.themoviedb.org/3/movie/${id}${KEY_API_CONFIG}`).then((response) => {
+          setGenres(response.data.genres)
+          setMovie(response.data)
+        }),
+        axios
+          .get(`https://api.themoviedb.org/3/movie/${id}/credits${KEY_API_CONFIG}`)
+          .then((response) => {
+            setCast(response.data.cast)
+          }),
+        axios
+          .get(`https://api.themoviedb.org/3/movie/${id}/videos${KEY_API_CONFIG}`)
+          .then((response) => {
+            setTrailer(response.data.results)
+          }),
+        axios
+          .get(`https://api.themoviedb.org/3/movie/${id}/recommendations${KEY_API_CONFIG}`)
+          .then((response) => {
+            setRcmMovie(response.data.results)
+          }),
+        axios
+          .get(`https://api.themoviedb.org/3/movie/${id}/reviews${KEY_API_CONFIG}`)
+          .then((response) => {
+            setComment(response.data.results)
+          }),
+      ])
     }, [id])
 
     const ChangeTab = (status) => {
@@ -150,7 +166,7 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
                     <MovieList2 data={rcmMovie} />
                   </View>
                 )
-              } else {
+              } else if (item.tab == "3") {
                 return (
                   <AboutMovie
                     key={3}
@@ -158,6 +174,28 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
                     vote_count={movie.vote_count}
                     vote_average={movie.vote_average}
                     runtime={movie.runtime}
+                  />
+                )
+              } else {
+                return (
+                  <FlatList
+                    key={4}
+                    data={comment}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => {
+                      return (
+                        <Comment
+                          name={item.author}
+                          img={
+                            !item.author_details.avatar_path
+                              ? "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                              : `https://image.tmdb.org/t/p/w500/${item.author_details.avatar_path}`
+                          }
+                          rating={!item.author_details.rating ? "#" : item.author_details.rating}
+                          content={item.content}
+                        />
+                      )
+                    }}
                   />
                 )
               }
