@@ -19,7 +19,7 @@ export const ButtonPlay = React.memo(
       <TouchableOpacity onPress={onPress}>
         <View style={styles.btn}>
           <Ionicons name="play" size={16} color={"#fff"} />
-          <Text style={{ color: "#fff", fontWeight: "bold" }}> Play</Text>
+          <Text style={{ color: "#fff", fontWeight: "bold" }}> Watch</Text>
         </View>
       </TouchableOpacity>
     )

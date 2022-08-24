@@ -3,8 +3,6 @@ import { observer } from "mobx-react-lite"
 import { FlatList, SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigatorParamList } from "../../navigators"
-import { ButtonPlay } from "../../components/button-play/button-play"
-import { ButtonDownload } from "../../components/button-download/button-download"
 import { Header } from "../../components/header/header"
 import { ItemCast } from "../../components/item-cast/item-cast"
 import axios from "axios"
@@ -84,9 +82,6 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
     const listGenre = genres.map((item) => {
       return item.name
     })
-    const uriVideo = trailer.map((item) => {
-      return item.key
-    })
     const getTrailer = () => {
       var keyVideo = ""
       trailer.forEach((item) => {
@@ -104,6 +99,11 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
             iconLeft="arrow-back"
             iconRight="ios-share-outline"
             leftFunc={() => navigation.goBack()}
+            rightFunc={() =>
+              navigation.navigate("watchVideo", {
+                uri: `https://www.youtube.com/watch?v=${!key ? getTrailer() : key}`,
+              })
+            }
           />
           <WatchYoutube keyVideo={!key ? getTrailer() : key} />
         </View>
@@ -111,15 +111,6 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
           <View style={styles.info}>
             <Text style={styles.nameMovie}>{movie.title}</Text>
             <Text style={styles.typeMovie}>{listGenre.join(", ")}</Text>
-            <View style={styles.menu}>
-              <ButtonPlay
-                onPress={() => {
-                  var rand = uriVideo[Math.floor(Math.random() * uriVideo.length)]
-                  setKey(rand)
-                }}
-              />
-              <ButtonDownload />
-            </View>
             <SafeAreaView>
               <FlatList
                 data={cast}
@@ -197,6 +188,7 @@ const styles = StyleSheet.create({
   typeMovie: {
     color: "#000",
     fontSize: 16,
+    marginBottom: 8,
   },
   menu: {
     flexDirection: "row",
