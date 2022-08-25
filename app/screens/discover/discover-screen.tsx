@@ -36,8 +36,12 @@ export const DiscoverScreen: FC<StackScreenProps<NavigatorParamList, "discover">
     const goToDetailById = (idMovie) => {
       navigation.navigate("detailsMovie", { id: idMovie })
     }
-    const setGenre = (idGenre) => {
-      setIdGenre(idGenre)
+    const setGenre = (idG) => {
+      if (idG == idGenre) {
+        setGenre("")
+      } else {
+        setIdGenre(idG)
+      }
     }
     return (
       <View style={styles.container}>
@@ -56,7 +60,7 @@ export const DiscoverScreen: FC<StackScreenProps<NavigatorParamList, "discover">
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
-                  style={styles.itemGenre}
+                  style={item.id == idGenre ? styles.itemGenreSelected : styles.itemGenre}
                   onPress={() => {
                     setGenre(item.id)
                   }}
@@ -100,6 +104,17 @@ const styles = StyleSheet.create({
     height: "80%",
     width: 100,
     backgroundColor: "#f4cccc",
+    borderColor: "red",
+    borderWidth: 2,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 4,
+  },
+  itemGenreSelected: {
+    height: "80%",
+    width: 100,
+    backgroundColor: "#f1f1f1",
     borderColor: "red",
     borderWidth: 2,
     borderRadius: 12,
