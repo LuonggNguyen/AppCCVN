@@ -7,6 +7,7 @@ import ItemMovie from "../../../components/item-movie/item-movie"
 type Props = {
   data: any[]
   onPress?
+  setKey?
 }
 
 export const MovieList2 = React.memo(
@@ -14,6 +15,7 @@ export const MovieList2 = React.memo(
     const navigation = useNavigation()
 
     const goToDetailById = (id) => {
+      props.setKey("")
       navigation.navigate("detailsMovie" as never, { id: id } as never)
     }
 

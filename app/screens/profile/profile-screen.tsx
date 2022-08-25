@@ -7,6 +7,7 @@ import { NavigatorParamList } from "../../navigators"
 // import { useStores } from "../../models"
 
 import auth, { firebase } from "@react-native-firebase/auth"
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
 
 // STOP! READ ME FIRST!
 // To fix the TS error below, you'll need to add the following things in your navigation config:
@@ -33,17 +34,25 @@ export const ProfileScreen: FC<StackScreenProps<NavigatorParamList, "profile">> 
     }, [])
     if (initializing) return null
     const logout = () => {
-      firebase
-        .auth()
-        .signOut()
-        .then(
-          function () {
-            console.log("Signout Email Succesfull")
-          },
-          function (error) {
-            console.log("Signout Failed")
-          },
-        )
+      GoogleSignin.signOut().then(
+        function () {
+          console.log("Signout Google Succesfull")
+        },
+        function (error) {
+          console.log("Signout Google Failed")
+        },
+      ) &&
+        firebase
+          .auth()
+          .signOut()
+          .then(
+            function () {
+              console.log("Signout Email Succesfull")
+            },
+            function (error) {
+              console.log("Signout Email Failed")
+            },
+          )
       navigation.navigate("login")
     }
     return (

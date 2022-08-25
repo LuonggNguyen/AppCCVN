@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import {
+  Alert,
   ViewStyle,
   View,
   Text,
@@ -67,18 +68,29 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList>> = observer(fun
   const { genres } = genreStore
 
   const leftFunc = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(
-        function () {
-          console.log("Signout Email Succesfull")
+    Alert.alert("Logout Account", "Do you logout account ?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          firebase
+            .auth()
+            .signOut()
+            .then(
+              function () {
+                console.log("Signout Email Succesfull")
+              },
+              function (error) {
+                console.log("Signout Failed")
+              },
+            )
+          navigation.navigate("login")
         },
-        function (error) {
-          console.log("Signout Failed")
-        },
-      )
-    navigation.navigate("login")
+      },
+    ])
   }
   const searchMovie = () => {
     navigation.navigate("searchMovie")

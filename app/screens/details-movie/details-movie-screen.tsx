@@ -163,7 +163,7 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
               } else if (item.tab == "2") {
                 return (
                   <View style={{ alignItems: "center" }} key={2}>
-                    <MovieList2 data={rcmMovie} />
+                    <MovieList2 data={rcmMovie} setKey={setKey} />
                   </View>
                 )
               } else if (item.tab == "3") {
