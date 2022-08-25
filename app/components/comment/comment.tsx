@@ -26,7 +26,7 @@ export const Comment = observer(function Comment(props: CommentProps) {
       </View>
       <View style={styles.comment}>
         <Text numberOfLines={5}>{props.content}</Text>
-        <Text style={{ color: "#000" }}>
+        <Text style={{ color: "#000", marginTop: 4 }}>
           Rate: {props.rating}/10 <Ionicons name="star" color={"gold"} size={20} />
         </Text>
       </View>
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   comment: {
-    marginHorizontal: 8,
+    margin: 8,
   },
 })

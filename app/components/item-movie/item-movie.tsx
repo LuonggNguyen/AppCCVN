@@ -34,7 +34,9 @@ export const ItemMovie = React.memo(
       >
         <Image style={styles.img} source={{ uri: props.img }} />
         <View style={styles.soccer}>
-          <Text style={{ color: "#fff", fontSize: 10 }}>{props.soccer.toFixed(1)}</Text>
+          <Text style={{ color: "#fff", fontSize: 10, fontWeight: "bold" }}>
+            {props.soccer.toFixed(1)}
+          </Text>
         </View>
       </TouchableOpacity>
     )

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { Text, TextInput, TouchableOpacity, View, ViewStyle } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -38,23 +38,16 @@ const TEXT_INPUT: ViewStyle = {
   borderColor: "#999",
   marginVertical: spacing[2],
 }
-
+GoogleSignin.configure({
+  webClientId: "72958083262-06927k9u2lfe8ic9v6c8e6cqf37orsa1.apps.googleusercontent.com",
+})
 export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = observer(
   function LoginScreen({ navigation }) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    useEffect(() => {
-      GoogleSignin.configure({
-        webClientId: "72958083262-06927k9u2lfe8ic9v6c8e6cqf37orsa1.apps.googleusercontent.com",
-      })
-    })
     async function onGoogleButtonPress() {
-      // Get the users ID token
-
       const { idToken } = await GoogleSignin.signIn()
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken)
-
-      // Sign-in the user with the credential
+      const googleCredential = await auth.GoogleAuthProvider.credential(idToken)
       return auth()
         .signInWithCredential(googleCredential)
         .then((userCredentials) => {
