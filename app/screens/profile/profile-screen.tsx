@@ -34,23 +34,16 @@ export const ProfileScreen: FC<StackScreenProps<NavigatorParamList, "profile">> 
     }, [])
     if (initializing) return null
     const logout = () => {
-      GoogleSignin.signOut().then(
-        function () {
-          console.log("Signout Google Succesfull")
-        },
-        function (error) {
-          console.log("Signout Google Failed")
-        },
-      ) &&
+      GoogleSignin.signOut() &&
         firebase
           .auth()
           .signOut()
           .then(
             function () {
-              console.log("Signout Email Succesfull")
+              console.log("Signout Succesfull")
             },
             function (error) {
-              console.log("Signout Email Failed")
+              console.log("Signout Failed")
             },
           )
       navigation.navigate("login")
