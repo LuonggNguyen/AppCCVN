@@ -59,11 +59,11 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
     const [status, setStatus] = useState("Trailers")
     const [dataList, setDataList] = useState(dataTab.filter((e) => e.status == status))
     useEffect(() => {
-      Promise.all([
-        axios.get(`https://api.themoviedb.org/3/movie/${id}${KEY_API_CONFIG}`).then((response) => {
-          setGenres(response.data.genres)
-          setMovie(response.data)
-        }),
+      let isMounted = true
+      axios.get(`https://api.themoviedb.org/3/movie/${id}${KEY_API_CONFIG}`).then((response) => {
+        setGenres(response.data.genres)
+        setMovie(response.data)
+      }),
         axios
           .get(`https://api.themoviedb.org/3/movie/${id}/credits${KEY_API_CONFIG}`)
           .then((response) => {
@@ -83,8 +83,10 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
           .get(`https://api.themoviedb.org/3/movie/${id}/reviews${KEY_API_CONFIG}`)
           .then((response) => {
             setComment(response.data.results)
-          }),
-      ])
+          })
+      return () => {
+        isMounted = false
+      }
     }, [id])
 
     const ChangeTab = (status) => {

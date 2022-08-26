@@ -30,23 +30,30 @@ export const ProfileScreen: FC<StackScreenProps<NavigatorParamList, "profile">> 
     }
     useEffect(() => {
       const subscriber = auth().onAuthStateChanged(onAuthStateChanged)
+      GoogleSignin.configure({
+        webClientId: "72958083262-06927k9u2lfe8ic9v6c8e6cqf37orsa1.apps.googleusercontent.com",
+      })
       return subscriber // unsubscribe on unmount
     }, [])
     if (initializing) return null
     const logout = () => {
-      GoogleSignin.signOut() &&
-        firebase
-          .auth()
-          .signOut()
-          .then(
-            function () {
-              console.log("Signout Succesfull")
-            },
-            function (error) {
-              console.log("Signout Failed")
-            },
-          )
-      navigation.navigate("login")
+      try {
+        GoogleSignin.signOut() &&
+          firebase
+            .auth()
+            .signOut()
+            .then(
+              function () {
+                console.log("Signout Succesfull")
+              },
+              function (error) {
+                console.log("Signout Failed")
+              },
+            )
+        navigation.navigate("login")
+      } catch (error) {
+        console.log(error)
+      }
     }
     return (
       <View style={styles.container}>

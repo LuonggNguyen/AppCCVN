@@ -38,30 +38,35 @@ const TEXT_INPUT: ViewStyle = {
   borderColor: "#999",
   marginVertical: spacing[2],
 }
-GoogleSignin.configure({
-  webClientId: "72958083262-06927k9u2lfe8ic9v6c8e6cqf37orsa1.apps.googleusercontent.com",
-})
+
 export const LoginScreen: FC<StackScreenProps<NavigatorParamList, "login">> = observer(
   function LoginScreen({ navigation }) {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     async function onGoogleButtonPress() {
-      const { idToken } = await GoogleSignin.signIn()
-      const googleCredential = await auth.GoogleAuthProvider.credential(idToken)
-      return auth()
-        .signInWithCredential(googleCredential)
-        .then((userCredentials) => {
-          const user = userCredentials.user
-          navigation.navigate("index")
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "index" }],
+      try {
+        await GoogleSignin.configure({
+          webClientId: "72958083262-06927k9u2lfe8ic9v6c8e6cqf37orsa1.apps.googleusercontent.com",
+        })
+        const { idToken } = await GoogleSignin.signIn()
+        const googleCredential = await auth.GoogleAuthProvider.credential(idToken)
+        return auth()
+          .signInWithCredential(googleCredential)
+          .then((userCredentials) => {
+            const user = userCredentials.user
+            navigation.navigate("index")
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "index" }],
+            })
+            console.log("Login Successful !! \n Hello " + user.email)
           })
-          console.log("Login Successful !! \n Hello " + user.email)
-        })
-        .catch((err) => {
-          console.log("Login Fail !!\n" + err)
-        })
+          .catch((err) => {
+            console.log("Login Fail !!\n" + err)
+          })
+      } catch (e) {
+        console.error(e)
+      }
     }
     const handleLogin = () => {
       if (!email || !password) {

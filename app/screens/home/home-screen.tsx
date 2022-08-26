@@ -21,6 +21,7 @@ import ItemMovie from "../../components/item-movie/item-movie"
 import { BannerMovie } from "../../components/banner-movie/banner-movie"
 import { useStores } from "../../models/root-store/root-store-context"
 import { firebase } from "@react-native-firebase/auth"
+import { GoogleSignin } from "@react-native-google-signin/google-signin"
 
 const ROOT: ViewStyle = {
   flex: 1,
@@ -76,17 +77,18 @@ export const HomeScreen: FC<StackScreenProps<NavigatorParamList>> = observer(fun
       {
         text: "OK",
         onPress: () => {
-          firebase
-            .auth()
-            .signOut()
-            .then(
-              function () {
-                console.log("Signout Email Succesfull")
-              },
-              function (error) {
-                console.log("Signout Failed")
-              },
-            )
+          GoogleSignin.signOut() &&
+            firebase
+              .auth()
+              .signOut()
+              .then(
+                function () {
+                  console.log("Signout Succesfull")
+                },
+                function (error) {
+                  console.log("Signout Failed")
+                },
+              )
           navigation.navigate("login")
         },
       },
