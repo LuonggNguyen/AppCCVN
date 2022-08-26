@@ -30,6 +30,7 @@ export const Comment = observer(function Comment(props: CommentProps) {
           Rate: {props.rating}/10 <Ionicons name="star" color={"gold"} size={20} />
         </Text>
       </View>
+      <View style={{ height: 0.5, backgroundColor: "#000", width: "100%" }} />
     </View>
   )
 })

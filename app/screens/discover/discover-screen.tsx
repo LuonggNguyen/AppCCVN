@@ -26,7 +26,6 @@ export const DiscoverScreen: FC<StackScreenProps<NavigatorParamList, "discover">
         .then((response) => {
           setMovieOfGenre(response.data.results)
         })
-
       return () => {}
     }, [idGenre])
 

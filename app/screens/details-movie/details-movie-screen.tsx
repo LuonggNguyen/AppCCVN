@@ -85,7 +85,6 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
             setComment(response.data.results)
           }),
       ])
-      return () => {}
     }, [id])
 
     const ChangeTab = (status) => {
