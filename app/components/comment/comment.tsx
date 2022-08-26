@@ -20,6 +20,7 @@ export interface CommentProps {
 export const Comment = observer(function Comment(props: CommentProps) {
   return (
     <View style={styles.container}>
+      <View style={{ height: 0.5, backgroundColor: "#000", width: "100%" }} />
       <View style={styles.user}>
         <Image source={{ uri: props.img }} style={styles.imgUser} />
         <Text style={styles.nameUser}>{props.name}</Text>
@@ -30,7 +31,6 @@ export const Comment = observer(function Comment(props: CommentProps) {
           Rate: {props.rating}/10 <Ionicons name="star" color={"gold"} size={20} />
         </Text>
       </View>
-      <View style={{ height: 0.5, backgroundColor: "#000", width: "100%" }} />
     </View>
   )
 })
