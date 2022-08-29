@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, useLayoutEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -17,7 +17,7 @@ export const SearchMovieScreen: FC<StackScreenProps<NavigatorParamList, "searchM
     const [movie, setMovie] = useState<Movie[]>(mv)
     const { topSearchMovieStore } = useStores()
     const { topSearchMovies } = topSearchMovieStore
-    useEffect(() => {
+    useLayoutEffect(() => {
       topSearchMovieStore.getTopSearchMovies()
       if (!search) {
         console.log("No query")

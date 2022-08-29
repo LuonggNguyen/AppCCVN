@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react"
+import React, { FC, useLayoutEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { FlatList, SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from "react-native"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -58,7 +58,7 @@ export const DetailsMovieScreen: FC<StackScreenProps<NavigatorParamList, "detail
     const [key, setKey] = useState()
     const [status, setStatus] = useState("Trailers")
     const [dataList, setDataList] = useState(dataTab.filter((e) => e.status == status))
-    useEffect(() => {
+    useLayoutEffect(() => {
       axios.get(`https://api.themoviedb.org/3/movie/${id}${KEY_API_CONFIG}`).then((response) => {
         setGenres(response.data.genres)
         setMovie(response.data)
