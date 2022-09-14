@@ -1,14 +1,14 @@
-Application to watch trailers of all movies nowadays, data from themoviedb helped me to complete this application, some pictures below of the application that I made.
+Application to watch trailers of all movies today, data from themoviedb helped me to complete this application, demo video and some images below of the application that I made.
 
+[![Everything Is AWESOME](https://user-images.githubusercontent.com/87462814/190061939-ead3fb1a-2f80-4adb-a1de-1843df8e4d56.jpg)](https://youtu.be/OP679FLHPaM "Everything Is AWESOME")
 
+<img src="https://user-images.githubusercontent.com/87462814/190056649-dbdaa8c1-b32c-4e2f-830f-fca0ab35f293.png" width="300"> <img src="https://user-images.githubusercontent.com/87462814/190056888-0eeac313-99d0-4714-b176-48fe8e06c5ca.png" width="300"> 
+<img src="https://user-images.githubusercontent.com/87462814/190056941-689d9749-ec5e-4754-89ea-d16eb71329cd.png" width="300">
+<img src="https://user-images.githubusercontent.com/87462814/190056960-f9f5382f-5728-4555-98a4-c8881e9e34c7.png" width="300">
+<img src="https://user-images.githubusercontent.com/87462814/190056973-7aa96bba-e8d8-4557-bea7-46c35d71e972.png" width="300">
+<img src="https://user-images.githubusercontent.com/87462814/190056978-95ee6d92-6d80-4bc6-8764-8d115b8e33ee.png" width="300">
+<img src="https://user-images.githubusercontent.com/87462814/190056982-9dc33fd1-f156-4b2e-9657-a5bebe36c440.png" width="300">
 
-![Screenshot_1663128027](https://user-images.githubusercontent.com/87462814/190056649-dbdaa8c1-b32c-4e2f-830f-fca0ab35f293.png)
-![Screenshot_1663128202](https://user-images.githubusercontent.com/87462814/190056888-0eeac313-99d0-4714-b176-48fe8e06c5ca.png)
-![Screenshot_1663128122](https://user-images.githubusercontent.com/87462814/190056941-689d9749-ec5e-4754-89ea-d16eb71329cd.png)
-![Screenshot_1663128133](https://user-images.githubusercontent.com/87462814/190056960-f9f5382f-5728-4555-98a4-c8881e9e34c7.png)
-![Screenshot_1663128139](https://user-images.githubusercontent.com/87462814/190056973-7aa96bba-e8d8-4557-bea7-46c35d71e972.png)
-![Screenshot_1663128155](https://user-images.githubusercontent.com/87462814/190056978-95ee6d92-6d80-4bc6-8764-8d115b8e33ee.png)
-![Screenshot_1663128175](https://user-images.githubusercontent.com/87462814/190056982-9dc33fd1-f156-4b2e-9657-a5bebe36c440.png)
 
 
 
