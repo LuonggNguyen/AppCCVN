@@ -2,6 +2,8 @@ Application to watch trailers of all movies today, data from themoviedb helped m
 
 [![Everything Is AWESOME](https://user-images.githubusercontent.com/87462814/190061939-ead3fb1a-2f80-4adb-a1de-1843df8e4d56.jpg)](https://youtu.be/OP679FLHPaM "Everything Is AWESOME")
 
+https://www.youtube.com/watch?v=OP679FLHPaM
+
 <img src="https://user-images.githubusercontent.com/87462814/190056649-dbdaa8c1-b32c-4e2f-830f-fca0ab35f293.png" width="300"> <img src="https://user-images.githubusercontent.com/87462814/190056888-0eeac313-99d0-4714-b176-48fe8e06c5ca.png" width="300"> 
 <img src="https://user-images.githubusercontent.com/87462814/190056941-689d9749-ec5e-4754-89ea-d16eb71329cd.png" width="300">
 <img src="https://user-images.githubusercontent.com/87462814/190056960-f9f5382f-5728-4555-98a4-c8881e9e34c7.png" width="300">
